@@ -18,16 +18,41 @@
 
 #include "FingerprintInscreen.h"
 #include <android-base/logging.h>
+#include <fcntl.h>
 #include <hardware_legacy/power.h>
 #include <cmath>
 #include <fstream>
+#include <poll.h>
+#include <sys/stat.h>
+#include <thread>
 
 #define COMMAND_NIT 10
 #define PARAM_NIT_FOD 1
 #define PARAM_NIT_NONE 0
 
 #define FINGERPRINT_ERROR_VENDOR 8
+#define FOD_UI_PATH "/sys/devices/platform/soc/soc:qcom,dsi-display/fod_ui"
 
+namespace {
+static bool readBool(int fd) {
+    char c;
+    int rc;
+
+    rc = lseek(fd, 0, SEEK_SET);
+    if (rc) {
+        LOG(ERROR) << "failed to seek fd, err: " << rc;
+        return false;
+    }
+
+    rc = read(fd, &c, sizeof(char));
+    if (rc != 1) {
+        LOG(ERROR) << "failed to read bool from fd, err: " << rc;
+        return false;
+    }
+
+    return c != '0';
+}
+}
 namespace vendor {
 namespace lineage {
 namespace biometrics {
@@ -38,6 +63,30 @@ namespace implementation {
 
 FingerprintInscreen::FingerprintInscreen() {
     xiaomiFingerprintService = IXiaomiFingerprint::getService();
+    std::thread([this]() {
+        int fd = open(FOD_UI_PATH, O_RDONLY);
+        if (fd < 0) {
+            LOG(ERROR) << "failed to open fd, err: " << fd;
+            return;
+        }
+
+        struct pollfd fodUiPoll = {
+            .fd = fd,
+            .events = POLLERR | POLLPRI,
+            .revents = 0,
+        };
+
+        while (true) {
+            int rc = poll(&fodUiPoll, 1, -1);
+            if (rc < 0) {
+                LOG(ERROR) << "failed to poll fd, err: " << rc;
+                continue;
+            }
+
+            xiaomiFingerprintService->extCmd(COMMAND_NIT,
+                    readBool(fd) ? PARAM_NIT_FOD : PARAM_NIT_NONE);
+        }
+    }).detach();
 }
 
 Return<void> FingerprintInscreen::onStartEnroll() {
