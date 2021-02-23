@@ -26,10 +26,6 @@
 #define PARAM_NIT_FOD 1
 #define PARAM_NIT_NONE 0
 
-#define TOUCH_FOD_ENABLE 10
-
-#define BRIGHTNESS_PATH "/sys/class/backlight/panel0-backlight/brightness"
-
 #define FINGERPRINT_ERROR_VENDOR 8
 
 namespace vendor {
@@ -41,8 +37,6 @@ namespace V1_0 {
 namespace implementation {
 
 FingerprintInscreen::FingerprintInscreen() {
-    xiaomiDisplayFeatureService = IDisplayFeature::getService();
-    touchFeatureService = ITouchFeature::getService();
     xiaomiFingerprintService = IXiaomiFingerprint::getService();
 }
 
@@ -55,26 +49,18 @@ Return<void> FingerprintInscreen::onFinishEnroll() {
 }
 
 Return<void> FingerprintInscreen::onPress() {
-    acquire_wake_lock(PARTIAL_WAKE_LOCK, LOG_TAG);
-    xiaomiFingerprintService->extCmd(COMMAND_NIT, PARAM_NIT_FOD);
     return Void();
 }
 
 Return<void> FingerprintInscreen::onRelease() {
-    xiaomiFingerprintService->extCmd(COMMAND_NIT, PARAM_NIT_NONE);
-    release_wake_lock(LOG_TAG);
     return Void();
 }
 
 Return<void> FingerprintInscreen::onShowFODView() {
-    touchFeatureService->setTouchMode(TOUCH_FOD_ENABLE, 1);
-    xiaomiDisplayFeatureService->setFeature(0, 17, 1, 1);
     return Void();
 }
 
 Return<void> FingerprintInscreen::onHideFODView() {
-    touchFeatureService->resetTouchMode(TOUCH_FOD_ENABLE);
-    xiaomiDisplayFeatureService->setFeature(0, 17, 0, 1);
     return Void();
 }
 
