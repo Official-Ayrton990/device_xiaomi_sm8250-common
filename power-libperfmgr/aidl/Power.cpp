@@ -15,7 +15,7 @@
  */
 
 #define ATRACE_TAG (ATRACE_TAG_POWER | ATRACE_TAG_HAL)
-#define LOG_TAG "android.hardware.power-service.pixel-libperfmgr"
+#define LOG_TAG "android.hardware.power-service.kona-libperfmgr"
 
 #include "Power.h"
 
@@ -29,8 +29,6 @@
 
 #include <utils/Log.h>
 #include <utils/Trace.h>
-
-#include "disp-power/display-helper.h"
 
 namespace aidl {
 namespace google {
@@ -46,7 +44,6 @@ constexpr char kPowerHalRenderingProp[] = "vendor.powerhal.rendering";
 Power::Power(std::shared_ptr<HintManager> hm)
     : mHintManager(hm),
       mInteractionHandler(nullptr),
-      mVRModeOn(false),
       mSustainedPerfModeOn(false) {
     mInteractionHandler = std::make_unique<InteractionHandler>(mHintManager);
     mInteractionHandler->Init();
@@ -56,15 +53,6 @@ Power::Power(std::shared_ptr<HintManager> hm)
         ALOGI("Initialize with SUSTAINED_PERFORMANCE on");
         mHintManager->DoHint("SUSTAINED_PERFORMANCE");
         mSustainedPerfModeOn = true;
-    } else if (state == "VR") {
-        ALOGI("Initialize with VR on");
-        mHintManager->DoHint(state);
-        mVRModeOn = true;
-    } else if (state == "VR_SUSTAINED_PERFORMANCE") {
-        ALOGI("Initialize with SUSTAINED_PERFORMANCE and VR on");
-        mHintManager->DoHint("VR_SUSTAINED_PERFORMANCE");
-        mSustainedPerfModeOn = true;
-        mVRModeOn = true;
     } else {
         ALOGI("Initialize PowerHAL");
     }
