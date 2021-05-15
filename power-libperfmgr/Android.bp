@@ -51,10 +51,6 @@ cc_binary {
         "libdisppower",
         "libperfmgr",
     ],
-	header_libs: [
-        "libhardware_headers",
-        "generated_kernel_headers",
-    ],
     proprietary: true,
 }
 
