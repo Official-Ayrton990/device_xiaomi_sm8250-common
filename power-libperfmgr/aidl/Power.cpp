@@ -29,6 +29,11 @@
 
 #include <utils/Log.h>
 #include <utils/Trace.h>
+#include <linux/input.h>
+
+constexpr char kWakeupEventNode[] = "/dev/input/event4";
+constexpr int kWakeupModeOff = 4;
+constexpr int kWakeupModeOn = 5;
 
 namespace aidl {
 namespace google {
@@ -77,6 +82,16 @@ ndk::ScopedAStatus Power::setMode(Mode type, bool enabled) {
     LOG(DEBUG) << "Power setMode: " << toString(type) << " to: " << enabled;
     ATRACE_INT(toString(type).c_str(), enabled);
     switch (type) {
+        case Mode::DOUBLE_TAP_TO_WAKE:
+            {
+            int fd = open(kWakeupEventNode, O_RDWR);
+            struct input_event ev;
+            ev.type = EV_SYN;
+            ev.code = SYN_CONFIG;
+            ev.value = enabled ? kWakeupModeOn : kWakeupModeOff;
+            write(fd, &ev, sizeof(ev));
+            close(fd);
+           } break;
         case Mode::LOW_POWER:
             break;
         case Mode::SUSTAINED_PERFORMANCE:
@@ -126,8 +141,8 @@ ndk::ScopedAStatus Power::setMode(Mode type, bool enabled) {
 
 ndk::ScopedAStatus Power::isModeSupported(Mode type, bool *_aidl_return) {
     bool supported = mHintManager->IsHintSupported(toString(type));
-    // LOW_POWER handled insides PowerHAL specifically
-    if (type == Mode::LOW_POWER) {
+    // DOUBLE_TAP_TO_WAKE handled insides PowerHAL specifically
+    if (type == Mode::DOUBLE_TAP_TO_WAKE) {
         supported = true;
     }
     LOG(INFO) << "Power mode " << toString(type) << " isModeSupported: " << supported;
