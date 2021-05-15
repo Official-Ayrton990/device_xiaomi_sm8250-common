@@ -6,9 +6,7 @@
       "Path": "/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq",
       "Values": [
         "9999999",
-        "1420800",
-        "1324800",
-        "1228800"
+        "1708800"
       ],
       "DefaultIndex": 0,
       "ResetOnInit": true
@@ -18,10 +16,7 @@
       "Path": "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq",
       "Values": [
         "9999999",
-        "1420800",
-        "1324800",
-        "1132800",
-        "576000"
+        "1708800"
       ],
       "ResetOnInit": true
     },
@@ -30,10 +25,10 @@
       "Path": "/sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq",
       "Values": [
         "9999999",
-        "1996800",
-        "1459200",
-        "1363200",
-        "1286400"
+        "2342400",
+        "2054400",
+        "1862400",
+        "1478400"
       ],
       "DefaultIndex": 0,
       "ResetOnInit": true
@@ -43,9 +38,7 @@
       "Path": "/sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq",
       "Values": [
         "9999999",
-        "1459200",
-        "1286400",
-        "1209600",
+        "1478400",
         "0"
       ],
       "ResetOnInit": true
@@ -54,8 +47,8 @@
       "Name": "GPUMaxFreq",
       "Path": "/sys/class/kgsl/kgsl-3d0/devfreq/max_freq",
       "Values": [
-        "710000000",
-        "342000000"
+        "675000000",
+        "441000000"
       ],
       "DefaultIndex": 0,
       "ResetOnInit": true
@@ -64,9 +57,8 @@
       "Name": "GPUMinFreq",
       "Path": "/sys/class/kgsl/kgsl-3d0/devfreq/min_freq",
       "Values": [
-        "520000000",
-        "342000000",
-        "257000000"
+        "40000000",
+        "305000000"
       ],
       "ResetOnInit": true
     },
@@ -175,7 +167,7 @@
     },
     {
       "Name": "LLCCBWMinFreq",
-      "Path": "/sys/class/devfreq/soc:qcom,llccbw/min_freq",
+      "Path": "/sys/class/devfreq/soc:qcom,cpu-cpu-llcc-bw/min_freq",
       "Values": [
         "6881",
         "2597",
@@ -185,7 +177,7 @@
     },
     {
       "Name": "LLCCBWSampleMs",
-      "Path": "/sys/class/devfreq/soc:qcom,llccbw/bw_hwmon/sample_ms",
+      "Path": "/sys/class/devfreq/soc:qcom,cpu-cpu-llcc-bw/bw_hwmon/sample_ms",
       "Values": [
         "10",
         "4"
@@ -196,7 +188,7 @@
       "Name": "L3LittleClusterMinFreq",
       "Path": "/sys/class/devfreq/soc:qcom,l3-cpu0/min_freq",
       "Values": [
-        "1478400000",
+        "1420800000",
         "300000000"
       ],
       "ResetOnInit": true
@@ -205,7 +197,7 @@
       "Name": "L3BigClusterMinFreq",
       "Path": "/sys/class/devfreq/soc:qcom,l3-cpu4/min_freq",
       "Values": [
-        "1478400000",
+        "1420800000",
         "300000000"
       ],
       "ResetOnInit": true
@@ -273,7 +265,7 @@
       "PowerHint": "SUSTAINED_PERFORMANCE",
       "Node": "CPUBigClusterMaxFreq",
       "Duration": 0,
-      "Value": "1363200"
+      "Value": "2419200"
     },
     {
       "PowerHint": "SUSTAINED_PERFORMANCE",
@@ -285,25 +277,25 @@
       "PowerHint": "SUSTAINED_PERFORMANCE",
       "Node": "CPULittleClusterMaxFreq",
       "Duration": 0,
-      "Value": "1228800"
+      "Value": "1708800"
     },
     {
       "PowerHint": "SUSTAINED_PERFORMANCE",
       "Node": "GPUMaxFreq",
       "Duration": 0,
-      "Value": "342000000"
+      "Value": "675000000"
     },
     {
       "PowerHint": "INTERACTION",
       "Node": "CPUBigClusterMinFreq",
       "Duration": 0,
-      "Value": "1209600"
+      "Value": "1766400"
     },
     {
       "PowerHint": "INTERACTION",
       "Node": "CPULittleClusterMinFreq",
       "Duration": 0,
-      "Value": "1132800"
+      "Value": "1708800"
     },
     {
       "PowerHint": "INTERACTION",
@@ -423,13 +415,13 @@
       "PowerHint": "LAUNCH",
       "Node": "L3LittleClusterMinFreq",
       "Duration": 5000,
-      "Value": "1478400000"
+      "Value": "1420800000"
     },
     {
       "PowerHint": "LAUNCH",
       "Node": "L3BigClusterMinFreq",
       "Duration": 5000,
-      "Value": "1478400000"
+      "Value": "1420800000"
     },
     {
       "PowerHint": "CAMERA_LAUNCH",
@@ -531,7 +523,7 @@
       "PowerHint": "AUDIO_STREAMING",
       "Node": "CPUBigClusterMinFreq",
       "Duration": 2000,
-      "Value": "1459200"
+      "Value": "1478400"
     },
     {
       "PowerHint": "AUDIO_STREAMING",
@@ -567,7 +559,7 @@
       "PowerHint": "EXPENSIVE_RENDERING",
       "Node": "GPUMaxFreq",
       "Duration": 0,
-      "Value": "710000000"
+      "Value": "587000000"
     }
   ]
 }
