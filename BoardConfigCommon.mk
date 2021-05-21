@@ -97,7 +97,7 @@ BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_CLANG_COMPILE := true
-TARGET_KERNEL_CONFIG := vendor/lmi-perf_defconfig
+TARGET_KERNEL_CONFIG := vendor/lmi_defconfig
 TARGET_KERNEL_SOURCE := kernel/xiaomi/sm8250
 
 # Kernel modules - WLAN
@@ -202,8 +202,7 @@ TARGET_QTI_USB_SUPPORTS_AUDIO_ACCESSORY := true
 
 # Verified Boot
 BOARD_AVB_ENABLE := true
-BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag
-BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
 BOARD_AVB_VBMETA_SYSTEM := system system_ext
 BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
 BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
