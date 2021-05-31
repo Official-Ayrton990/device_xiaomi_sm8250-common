@@ -116,6 +116,10 @@ ddr_type=`od -An -tx /proc/device-tree/memory/ddr_device_type`
 ddr_type4="07"
 ddr_type5="08"
 
+# Enable schedutil
+echo "schedutil" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
+echo "schedutil" > /sys/devices/system/cpu/cpu7/cpufreq/scaling_governor
+
 # Disable Core control on silver
 echo 0 > /sys/devices/system/cpu/cpu0/core_ctl/enable
 echo 0 > /sys/devices/system/cpu/cpu4/core_ctl/enable
