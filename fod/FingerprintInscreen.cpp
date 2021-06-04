@@ -40,15 +40,6 @@ namespace inscreen {
 namespace V1_0 {
 namespace implementation {
 
-template <typename T>
-static T get(const std::string& path, const T& def) {
-    std::ifstream file(path);
-    T result;
-
-    file >> result;
-    return file.fail() ? def : result;
-}
-
 FingerprintInscreen::FingerprintInscreen() {
     xiaomiDisplayFeatureService = IDisplayFeature::getService();
     touchFeatureService = ITouchFeature::getService();
@@ -102,16 +93,7 @@ Return<void> FingerprintInscreen::setLongPressEnabled(bool) {
 }
 
 Return<int32_t> FingerprintInscreen::getDimAmount(int32_t) {
-    float alpha;
-    int realBrightness = get(BRIGHTNESS_PATH, 0);
-    if (realBrightness > 9) {
-    alpha = (255 + ((-8.08071) * pow(realBrightness, 0.45)));
-    } else {
-    alpha = (255 + ((-10.08071) * pow(realBrightness, 0.45)));
-    }
-    if(alpha < 0.82)
-    alpha+=0.1;
-    return alpha;
+    return 0;
 }
 
 Return<bool> FingerprintInscreen::shouldBoostBrightness() {
