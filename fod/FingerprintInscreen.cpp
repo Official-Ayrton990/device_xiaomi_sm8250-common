@@ -21,6 +21,10 @@
 #include <hardware_legacy/power.h>
 #include <cmath>
 #include <fstream>
+#include <poll.h>
+#include <sys/stat.h>
+#include <thread>
+#include <fcntl.h>
 
 #define COMMAND_NIT 10
 #define PARAM_NIT_FOD 1
@@ -28,7 +32,7 @@
 
 #define TOUCH_FOD_ENABLE 10
 
-#define BRIGHTNESS_PATH "/sys/class/backlight/panel0-backlight/brightness"
+#define DC_DIM_PATH "/sys/devices/platform/soc/soc:qcom,dsi-display-primary/dimlayer_hbm"
 
 #define FINGERPRINT_ERROR_VENDOR 8
 
@@ -41,12 +45,9 @@ namespace V1_0 {
 namespace implementation {
 
 template <typename T>
-static T get(const std::string& path, const T& def) {
-    std::ifstream file(path);
-    T result;
-
-    file >> result;
-    return file.fail() ? def : result;
+static void set(const std::string& path, const T& value) {
+    std::ofstream file(path);
+    file << value;
 }
 
 FingerprintInscreen::FingerprintInscreen() {
@@ -77,13 +78,13 @@ Return<void> FingerprintInscreen::onRelease() {
 
 Return<void> FingerprintInscreen::onShowFODView() {
     touchFeatureService->setTouchMode(TOUCH_FOD_ENABLE, 1);
-    xiaomiDisplayFeatureService->setFeature(0, 17, 1, 1);
+    set(DC_DIM_PATH, 1);
     return Void();
 }
 
 Return<void> FingerprintInscreen::onHideFODView() {
     touchFeatureService->resetTouchMode(TOUCH_FOD_ENABLE);
-    xiaomiDisplayFeatureService->setFeature(0, 17, 0, 1);
+    set(DC_DIM_PATH, 0);
     return Void();
 }
 
@@ -102,16 +103,7 @@ Return<void> FingerprintInscreen::setLongPressEnabled(bool) {
 }
 
 Return<int32_t> FingerprintInscreen::getDimAmount(int32_t) {
-    float alpha;
-    int realBrightness = get(BRIGHTNESS_PATH, 0);
-    if (realBrightness > 9) {
-    alpha = (255 + ((-8.08071) * pow(realBrightness, 0.45)));
-    } else {
-    alpha = (255 + ((-10.08071) * pow(realBrightness, 0.45)));
-    }
-    if(alpha < 0.82)
-    alpha+=0.1;
-    return alpha;
+    return 0;
 }
 
 Return<bool> FingerprintInscreen::shouldBoostBrightness() {
