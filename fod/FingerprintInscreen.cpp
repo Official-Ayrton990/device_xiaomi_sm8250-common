@@ -33,6 +33,10 @@
 #define TOUCH_FOD_ENABLE 10
 
 #define DC_DIM_PATH "/sys/devices/platform/soc/soc:qcom,dsi-display-primary/dimlayer_hbm"
+#define HBM_PATH "/sys/devices/platform/soc/soc:qcom,dsi-display-primary/hbm"
+#define DISPPARAM_PATH "/sys/devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/card0-DSI-1/disp_param"
+#define DISPPARAM_HBM_FOD_ON "0x20000"
+#define DISPPARAM_HBM_FOD_OFF "0xE0000"
 
 #define FINGERPRINT_ERROR_VENDOR 8
 
@@ -66,11 +70,15 @@ Return<void> FingerprintInscreen::onFinishEnroll() {
 
 Return<void> FingerprintInscreen::onPress() {
     acquire_wake_lock(PARTIAL_WAKE_LOCK, LOG_TAG);
+    set(HBM_PATH, PARAM_NIT_FOD);
+    set(DISPPARAM_PATH, DISPPARAM_HBM_FOD_ON);
     xiaomiFingerprintService->extCmd(COMMAND_NIT, PARAM_NIT_FOD);
     return Void();
 }
 
 Return<void> FingerprintInscreen::onRelease() {
+    set(HBM_PATH, PARAM_NIT_NONE);
+    set(DISPPARAM_PATH, DISPPARAM_HBM_FOD_OFF);
     xiaomiFingerprintService->extCmd(COMMAND_NIT, PARAM_NIT_NONE);
     release_wake_lock(LOG_TAG);
     return Void();
@@ -78,13 +86,13 @@ Return<void> FingerprintInscreen::onRelease() {
 
 Return<void> FingerprintInscreen::onShowFODView() {
     touchFeatureService->setTouchMode(TOUCH_FOD_ENABLE, 1);
-    set(DC_DIM_PATH, 1);
+    set(DC_DIM_PATH, PARAM_NIT_FOD);
     return Void();
 }
 
 Return<void> FingerprintInscreen::onHideFODView() {
     touchFeatureService->resetTouchMode(TOUCH_FOD_ENABLE);
-    set(DC_DIM_PATH, 0);
+    set(DC_DIM_PATH, PARAM_NIT_NONE);
     return Void();
 }
 
