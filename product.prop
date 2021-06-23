@@ -2,9 +2,6 @@
 ro.config.media_vol_steps=35
 ro.config.vc_call_vol_steps=14
 
-# Use Vulkan backend for Skia UI rendering
-debug.hwui.renderer=skiavk
-
 # Enable blurs, hidden under dev option
 ro.surface_flinger.supports_background_blur=1
 persist.sys.sf.disable_blurs=1
