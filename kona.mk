@@ -360,6 +360,7 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES += \
     init.qcom.factory.rc \
+    init.qcom.power.rc \
     init.qcom.rc \
     init.qcom.usb.rc \
     init.target.rc \
