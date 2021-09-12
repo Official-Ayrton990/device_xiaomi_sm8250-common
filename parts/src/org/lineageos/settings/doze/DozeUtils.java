@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.aospextended.settings.doze;
+package org.lineageos.settings.doze;
 
 import android.content.Context;
 import android.content.Intent;

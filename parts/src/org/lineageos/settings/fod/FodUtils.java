@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.aospextended.settings.fod;
+package org.lineageos.settings.fod;
 
 import android.content.Context;
 import android.content.Intent;

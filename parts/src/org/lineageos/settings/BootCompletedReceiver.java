@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-package org.aospextended.settings;
+package org.lineageos.settings;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import org.aospextended.settings.doze.DozeUtils;
-import org.aospextended.settings.fod.FodUtils;
-import org.aospextended.settings.touchsampling.TouchSamplingUtils;
+import org.lineageos.settings.doze.DozeUtils;
+import org.lineageos.settings.fod.FodUtils;
+import org.lineageos.settings.touchsampling.TouchSamplingUtils;
 
 public class BootCompletedReceiver extends BroadcastReceiver {
 
